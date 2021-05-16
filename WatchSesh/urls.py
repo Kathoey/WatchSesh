@@ -16,8 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.conf.urls import include
+from django.conf.urls import url
+from WatchSesh.Core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('chat/', include('chat.urls')),
+    # Add Django site authentication urls (for login, logout, password management)
+    path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^accounts/signup/$', views.signup, name='signup'),
 ]

@@ -1,6 +1,8 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 
+#TODO: fix sending of data to include all the stuff and types given
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -26,12 +28,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
-
+        message_type = text_data_json['type']
+        user = text_data_json['user']
         # Send message to room group
         await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type': 'chat_message',
+                'type': message_type,
+                'user': user,
                 'message': message
             }
         )
@@ -39,8 +43,25 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Receive message from room group
     async def chat_message(self, event):
         message = event['message']
-
+        message_type = event['type']
+        user = event['user']
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
-            'message': message
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
+
+    # Receive video from room group
+    async def video_load(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
         }))
