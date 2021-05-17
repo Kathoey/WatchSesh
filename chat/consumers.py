@@ -65,3 +65,52 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'user': user,
 
         }))
+
+    # On room join
+    async def room_join(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
+
+    async def pause_message(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
+
+    async def unpause_message(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
+
+    async def seek_message(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
