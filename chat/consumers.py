@@ -114,3 +114,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
             'user': user,
 
         }))
+
+    async def room_join(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))
+
+    async def room_leave(self, event):
+        message = event['message']
+        message_type = event['type']
+        user = event['user']
+        # Send message to WebSocket
+        await self.send(text_data=json.dumps({
+            'message': message,
+            'type': message_type,
+            'user': user,
+
+        }))

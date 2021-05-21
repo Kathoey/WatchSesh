@@ -1,8 +1,13 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
+{% if user.is_authenticated %}
+    <p>You have already logged in {{ user.username }}</p>
 
-  {% if form.errors %}
+   <p><a href="{% url 'lobby' %}">Join a room</a></p>
+
+{% else %}
+{% if form.errors %}
     <p>Your username and password didn't match. Please try again.</p>
   {% endif %}
 
@@ -15,7 +20,7 @@
     {% endif %}
   {% endif %}-->
 
-  <form method="post" action="{% url 'index' %}">
+  <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
     <table>
       <tr>
@@ -33,5 +38,6 @@
     <p><a href="{% url 'signup' %}">Signup</a></p>
   {# Assumes you setup the password_reset view in your URLconf #}
   {# <p><a href="{% url 'password_reset' %}">Lost password?</a></p>#}
+{% endif %}
 
 {% endblock %}

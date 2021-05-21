@@ -1,201 +1,295 @@
 <!-- chat/templates/chat/room.html -->
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Chat Room</title>
-</head>
-<body>
-<p>Please wait until everyone is in the room before playing the first video</p>
-<input id="play-video-input" type="text" size="100"><br>
-<input id="play-video-submit" type="button" value="Play"><br>
-<div id="player"></div>
-<textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
-<input id="chat-message-input" type="text" size="100"><br>
-<input id="chat-message-submit" type="button" value="Send">
-{{ room_name|json_script:"room-name" }}
-{{ user.username|json_script:"username" }}
+{% extends "chat/loginBase.html" %}
+{% block content %}
+{% if user.is_authenticated %}
+    <body>
+    <h1></h1>
+    <p>Please wait until everyone is in the room before playing the first video</p>
+    <input id="play-video-input" type="text" size="100"><br>
+    <input id="play-video-submit" type="button" value="Play"><br>
+    <div id="player"></div>
+    <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
+    <input id="chat-message-input" type="text" size="100"><br>
+    <input id="chat-message-submit" type="button" value="Send"><br>
+    <input id="joke-button" type="button" value="Get a random joke"><br>
+    <input id="quote-button" type="button" value="Get a random quote"><br>
+    <input id="cat-fact-button" type="button" value="Get a cat fact"><br>
+    <input id="advice-button" type="button" value="Get advice"><br>
 
-<script>
+    {{ room_name|json_script:"room-name" }}
+    {{ user.username|json_script:"username" }}
 
-    // 2. This code loads the IFrame Player API code asynchronously.
-    let tag = document.createElement('script');
+    <script>
+        // 2. This code loads the IFrame Player API code asynchronously.
+        let tag = document.createElement('script');
 
-    tag.src = "https://www.youtube.com/iframe_api";
-    let firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        tag.src = "https://www.youtube.com/iframe_api";
+        let firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-    // 3. This function creates an <iframe> (and YouTube player)
-    //    after the API code downloads.
-    let player;
-    let lastTime = -1;
-    let interval = 1000;
+        // 3. This function creates an <iframe> (and YouTube player)
+        //    after the API code downloads.
+        let player;
+        let lastTime = -1;
+        let interval = 1000;
 
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '390',
-            width: '640',
-            videoId: '7RzA_Oomra8',
-            playerVars: {
-                'playsinline': 1
-            },
-            events: {
-                'onReady': onPlayerReady,
-                'onStateChange': onPlayerStateChange,
-            }
-        });
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '390',
+                width: '640',
+                videoId: '7RzA_Oomra8',
+                playerVars: {
+                    'playsinline': 1
+                },
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange,
+                }
+            });
 
-    }
-
-    // 4. The API will call this function when the video player is ready.
-    function onPlayerReady(event) {
-        event.target.playVideo();
-        setTimeout(checkPlayerTime, interval); //delayed call
-    }
-
-    function onPlayerStateChange(event) {
-        // Paused
-        switch(event.target.getPlayerState()) {
-            case 1:
-                chatSocket.send(JSON.stringify({
-                    'type': 'unpause_message',
-                    'user': username,
-                    'message': event.target.getCurrentTime(),
-                }))
-                break;
-            case 2:
-                chatSocket.send(JSON.stringify({
-                    'type': 'pause_message',
-                    'user': username,
-                    'message': event.target.getCurrentTime(),
-                }))
-                break;
         }
-    }
 
-    let checkPlayerTime = function() {
-        if(lastTime != -1) {
-            // Playing
-            if(player.getPlayerState() == 1) {
-                let t = player.getCurrentTime();
-                //console.log(Math.abs(t - lastTime -1));
-                if (Math.abs(t - lastTime -1) > .5) {
-                    // seek occurred
-                     chatSocket.send(JSON.stringify({
-                        'type': 'seek_message',
+        // 4. The API will call this function when the video player is ready.
+        function onPlayerReady(event) {
+            event.target.playVideo();
+            setTimeout(checkPlayerTime, interval); //delayed call
+        }
+
+        function onPlayerStateChange(event) {
+            // Paused
+            switch(event.target.getPlayerState()) {
+                case 1:
+                    console.log("sent unpause")
+                    chatSocket.send(JSON.stringify({
+                        'type': 'unpause_message',
                         'user': username,
-                        'message': t,
-                     }));
+                        'message': event.target.getCurrentTime(),
+                    }))
+                    break;
+                case 2:
+                    console.log("sent unpause")
+                    chatSocket.send(JSON.stringify({
+                        'type': 'pause_message',
+                        'user': username,
+                        'message': event.target.getCurrentTime(),
+                    }))
+                    break;
+            }
+        }
+
+        let checkPlayerTime = function() {
+            if(lastTime != -1) {
+                // Playing
+                if(player.getPlayerState() == 1) {
+                    let t = player.getCurrentTime();
+                    //console.log(Math.abs(t - lastTime -1));
+                    if (Math.abs(t - lastTime -1) > .5) {
+                        // seek occurred
+                         chatSocket.send(JSON.stringify({
+                            'type': 'seek_message',
+                            'user': username,
+                            'message': t,
+                         }));
+                    }
                 }
             }
+            lastTime = player.getCurrentTime();
+            setTimeout(checkPlayerTime, interval); /// repeat function call in 1 second
         }
-        lastTime = player.getCurrentTime();
-        setTimeout(checkPlayerTime, interval); /// repeat function call in 1 second
-    }
 
 
-    const roomName = JSON.parse(document.getElementById('room-name').textContent);
-    let username = JSON.parse(document.getElementById('username').textContent);
-
-    if (!username) {
-        username = 'guest';
-    }
-
-    const chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/chat/'
-        + roomName
-        + '/'
-    );
-
-    chatSocket.onmessage = function (e) {
-        const data = JSON.parse(e.data);
-        const today = new Date()
-        let h = today.getHours()
-        let m = today.getMinutes()
-        if (m < 10) {
-            m = `0${m}`
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        let username = JSON.parse(document.getElementById('username').textContent);
+        document.querySelector('h1').textContent = "Room: " + roomName
+        if (!username) {
+            username = 'guest';
         }
-            console.log(data)
-            switch(data.type) {
-                case 'chat_message':
-                    document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ': ' + data.message + '\n');
-                    document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
-                    break;
-                case 'video_load':
-                    document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' played: ' + data.message + '\n');
-                    document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
-                    var video_id = data.message.split('v=')[1];
-                    var ampersandPosition = video_id.indexOf('&')
-                    if (ampersandPosition != -1) {
-                        video_id = video_id.substring(0, ampersandPosition)
-                    }
-                    console.log(video_id)
-                    player.loadVideoById(video_id)
-                    player.seekTo(-1,false)
-                    lastTime = -1;
-                    player.playVideo()
-                    break;
-                case 'pause_message':
-                    document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' paused at: ' + Math.round(data.message) + ' seconds\n');
-                    player.pauseVideo();
-                    break;
-                case 'unpause_message':
-                    document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' unpaused at: ' + Math.round(data.message) + ' seconds\n');
-                    player.playVideo();
-                    break;
-                case 'seek_message':
-                    break;
+
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            const today = new Date()
+            let h = today.getHours()
+            let m = today.getMinutes()
+            if (m < 10) {
+                m = `0${m}`
             }
-    };
+                switch(data.type) {
+                    case 'chat_message':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ': ' + data.message + '\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        break;
+                    case 'video_load':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' played: ' + data.message + '\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        var video_id = data.message.split('v=')[1];
+                        var ampersandPosition = video_id.indexOf('&')
+                        if (ampersandPosition != -1) {
+                            video_id = video_id.substring(0, ampersandPosition)
+                        }
 
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-    };
+                        player.loadVideoById(video_id)
+                        player.seekTo(-1,true)
+                        lastTime = -1;
+                        player.playVideo()
+                        break;
+                    case 'pause_message':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' paused at: ' + Math.round(data.message) + ' seconds\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
 
-    document.querySelector('#chat-message-input').focus();
-    document.querySelector('#chat-message-input').onkeyup = function (e) {
-        if (e.keyCode === 13) {  // enter, return
-            document.querySelector('#chat-message-submit').click();
+                        if(Math.abs(data.message - lastTime -1) > 1){
+                            player.seekTo(data.message, true)
+                            lastTime = data.message
+                        } else {
+                            player.pauseVideo();
+                        }
+                        break;
+                    case 'unpause_message':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' unpaused at: ' + Math.round(data.message) + ' seconds\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        if(Math.abs(data.message - lastTime -1) > 1){
+                            player.seekTo(data.message, true)
+                            lastTime = data.message
+                        } else {
+                            player.playVideo();
+                        }
+
+                        break;
+                    case 'seek_message':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' seeked to: ' + Math.round(data.message) + ' seconds\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        player.seekTo(data.message, true)
+                        lastTime = player.currentTime()
+                        break;
+                    case 'room_join':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' joined room\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        break;
+                    case 'room_leave':
+                        document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' left room\n');
+                        document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
+                        break;
+                }
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+
+            chatSocket.send(JSON.stringify({
+                'type': 'chat_message',
+                'user': username,
+                'message': message,
+
+            }));
+            messageInputDom.value = '';
+        };
+
+        document.querySelector('#play-video-input').onkeyup = function (e) {
+           if (e.keyCode === 13) {  // enter, return
+               document.querySelector('#play-video-submit').click();
+           }
+        };
+
+        document.querySelector('#play-video-submit').onclick = function (e) {
+            const videoInputDom = document.querySelector('#play-video-input');
+            const url = videoInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'type': 'video_load',
+                'user': username,
+                'message': url,
+
+            }));
+            videoInputDom.value = '';
+        };
+
+        window.onload = (event) => {
+            chatSocket.send(JSON.stringify({
+                'type': 'room_join',
+                'user': username,
+                'message': 'joined',
+            }))
         }
-    };
+        // add window.onbeforeunload event
+        window.onbeforeunload = (event) => {
+            chatSocket.send(JSON.stringify({
+                'type': 'room_leave',
+                'user': username,
+                'message': 'joined',
+            }))
+        }
 
-    document.querySelector('#chat-message-submit').onclick = function (e) {
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
+        document.querySelector('#joke-button').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            let jokeRequest = new XMLHttpRequest();
+            jokeRequest.onreadystatechange = function() {
+                let joke = JSON.parse(this.responseText);
+                messageInputDom.value = joke.setup + ' ' +joke.punchline;
+            };
+            jokeRequest.open("GET", "https://official-joke-api.appspot.com/random_joke");
+            jokeRequest.send();
+        }
 
-        chatSocket.send(JSON.stringify({
-            'type': 'chat_message',
-            'user': username,
-            'message': message,
+        document.querySelector('#quote-button').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            let quoteRequest = new XMLHttpRequest();
+            quoteRequest.onreadystatechange = function() {
+                let quote = JSON.parse(this.responseText);
 
-        }));
-        messageInputDom.value = '';
-    };
+                messageInputDom.value = quote[Math.floor(Math.random()*1643)].text + ' -' + quote[Math.floor(Math.random()*1643)].author;
+            };
+            quoteRequest.open("GET", "https://type.fit/api/quotes");
+            quoteRequest.send();
+        }
 
-    document.querySelector('#play-video-input').onkeyup = function (e) {
-       if (e.keyCode === 13) {  // enter, return
-           document.querySelector('#play-video-submit').click();
-       }
-    };
+        document.querySelector('#cat-fact-button').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            let catfactRequest = new XMLHttpRequest();
+            catfactRequest.onreadystatechange = function() {
+                let catfact = JSON.parse(this.responseText);
 
-    document.querySelector('#play-video-submit').onclick = function (e) {
-        const videoInputDom = document.querySelector('#play-video-input');
-        const url = videoInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'type': 'video_load',
-            'user': username,
-            'message': url,
+                messageInputDom.value = catfact.fact;
+            };
+            catfactRequest.open("GET", "https://catfact.ninja/fact");
+            catfactRequest.send();
+        }
 
-        }));
-        videoInputDom.value = '';
-    };
-    chatSocket.send(JSON.stringify({
-        'type': 'room_join',
-        'user': username,
-        'message': 'joined',
-    }))
-</script>
-</body>
-</html>
+        document.querySelector('#advice-button').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            let adviceRequest = new XMLHttpRequest();
+            adviceRequest.onreadystatechange = function() {
+                let advice = JSON.parse(this.responseText);
+                console.log(typeof (this.responseText))
+
+                messageInputDom.value = advice.slip.advice
+            };
+            adviceRequest.open("GET", "https://api.adviceslip.com/advice");
+            adviceRequest.send();
+        }
+    </script>
+    </body>
+{% else %}
+    <p>Please login to see this page.</p>
+
+   <p><a href="{% url 'login' %}">Login</a></p>
+{% endif %}
+{% endblock %}
+

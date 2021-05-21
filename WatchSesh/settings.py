@@ -20,11 +20,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv'
-
+# SECRET_KEY = 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv'
+import os
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
+# DEBUG = True
+DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+# You can set the environment variable to False by issuing the following command: export DJANGO_DEBUG=False
 ALLOWED_HOSTS = []
 
 
@@ -126,7 +128,7 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
+LOGIN_REDIRECT_URL = '/chat'
 
 # Channels
 ASGI_APPLICATION = 'WatchSesh.asgi.application'

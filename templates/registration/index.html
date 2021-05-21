@@ -1,0 +1,31 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+
+<!DOCTYPE html>
+<html lang="en">
+<header>
+    <title>WatchSesh</title>
+    <meta charset="utf-8">
+
+</header>
+
+<body>
+<img src="{% static "pogchamp.png" %}" alt="logo" class="center">
+<!--<img src="https://i.ibb.co/9wzmBBM/pogchamp.png" alt="pogchamp" class="center">-->
+<h1 class="center_text">Welcome to WatchSesh</h1>
+<p class="center_text"> Where you can watch Youtube videos with friends</p>
+<a class="center" href="{% url 'login' %}"><button>Log In</button></a>
+<style>
+    .center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+    }
+    .center_text {
+        text-align:center;
+    }
+</style>
+</body>
+</html>
