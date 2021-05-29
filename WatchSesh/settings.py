@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-*(yo$ii%vr66!q
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # You can set the environment variable to False by issuing the following command: export DJANGO_DEBUG=False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['watchsesh.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
