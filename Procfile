@@ -1,2 +1,2 @@
-web: daphne WatchSesh.core.asgi:application --port $PORT --bind 0.0.0.0 -v2
+web: gunicorn WatchSesh.wsgi --log-file -
 worker: python manage.py runworker channel_layer --settings=WatchSesh.settings -v2
