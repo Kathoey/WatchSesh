@@ -59,7 +59,6 @@
             // Paused
             switch(event.target.getPlayerState()) {
                 case 1:
-                    console.log("sent unpause")
                     chatSocket.send(JSON.stringify({
                         'type': 'unpause_message',
                         'user': username,
@@ -67,7 +66,7 @@
                     }))
                     break;
                 case 2:
-                    console.log("sent unpause")
+
                     chatSocket.send(JSON.stringify({
                         'type': 'pause_message',
                         'user': username,
@@ -82,7 +81,7 @@
                 // Playing
                 if(player.getPlayerState() == 1) {
                     let t = player.getCurrentTime();
-                    //console.log(Math.abs(t - lastTime -1));
+
                     if (Math.abs(t - lastTime -1) > .5) {
                         // seek occurred
                          chatSocket.send(JSON.stringify({
@@ -285,7 +284,7 @@
             let adviceRequest = new XMLHttpRequest();
             adviceRequest.onreadystatechange = function() {
                 let advice = JSON.parse(this.responseText);
-                console.log(typeof (this.responseText))
+
 
                 messageInputDom.value = advice.slip.advice
             };
