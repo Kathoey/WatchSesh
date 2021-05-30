@@ -16,7 +16,7 @@ import chat.routing
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "WatchSesh.settings")
 
 application = ProtocolTypeRouter({
-  "https": get_asgi_application(),
+  "http": get_asgi_application(),
   "websocket": AuthMiddlewareStack(
         URLRouter(
             chat.routing.websocket_urlpatterns
