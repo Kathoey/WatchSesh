@@ -132,10 +132,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat'
 
-redisURL = os.environ.get('REDIS_URL')
-portIndex = redisURL.rfind(":")
-urlPart = redisURL[:portIndex]
-portPart = redisURL[portIndex+1:]
+#redisURL = os.environ.get('REDIS_URL')
+#portIndex = redisURL.rfind(":")
+#urlPart = redisURL[:portIndex]
+#portPart = redisURL[portIndex+1:]
 # Channels
 ASGI_APPLICATION = 'WatchSesh.asgi.application'
 CHANNEL_LAYERS = {
@@ -143,7 +143,8 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             #"hosts": [('127.0.0.1', 6379)],
-            "hosts": [(urlPart, portPart)]
+            #"hosts": [(urlPart, portPart)]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')]
         },
     },
 }
