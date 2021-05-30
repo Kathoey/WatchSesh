@@ -104,9 +104,9 @@
         if (!username) {
             username = 'guest';
         }
-
+        // ws for http, wss for https
         const chatSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
             + '/ws/chat/'
             + roomName
