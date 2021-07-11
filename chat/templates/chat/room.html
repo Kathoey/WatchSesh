@@ -106,9 +106,9 @@
         // ws for http, wss for https
         console.log("before chat socket create")
         const chatSocket = new WebSocket(
-            'ws://'
+            'wss://'
             + window.location.host
-            + '/ws/chat/'
+            + '/wss/chat/'
             + roomName
             + '/'
         );
