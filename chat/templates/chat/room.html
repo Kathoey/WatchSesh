@@ -299,7 +299,7 @@
 
 
         }
-        let YTCookie = document.getElementById("player").contentWindow.cookie
+        let YTCookie = document.getElementById("player").contentDocument.cookie
         document.cookie = `${YTCookie}=; SameSite=None; Secure`
     </script>
     </body>
