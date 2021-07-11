@@ -133,6 +133,13 @@ LOGIN_REDIRECT_URL = '/chat'
 # Channels
 ASGI_APPLICATION = 'WatchSesh.asgi.application'
 CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
+'''
+
+CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
@@ -140,4 +147,4 @@ CHANNEL_LAYERS = {
         },
     },
 }
-
+'''

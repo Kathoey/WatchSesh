@@ -7,7 +7,7 @@
     <p>Please wait until everyone is in the room before playing the first video</p>
     <input id="play-video-input" type="text" size="100"><br>
     <input id="play-video-submit" type="button" value="Play"><br>
-    <div id="player"></div>
+    <div id="player"></div><br>
     <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send"><br>
@@ -59,7 +59,6 @@
             // Paused
             switch(event.target.getPlayerState()) {
                 case 1:
-                    console.log("sent unpause")
                     chatSocket.send(JSON.stringify({
                         'type': 'unpause_message',
                         'user': username,
@@ -67,7 +66,7 @@
                     }))
                     break;
                 case 2:
-                    console.log("sent unpause")
+
                     chatSocket.send(JSON.stringify({
                         'type': 'pause_message',
                         'user': username,
@@ -82,14 +81,14 @@
                 // Playing
                 if(player.getPlayerState() == 1) {
                     let t = player.getCurrentTime();
-                    //console.log(Math.abs(t - lastTime -1));
+
                     if (Math.abs(t - lastTime -1) > .5) {
                         // seek occurred
                          chatSocket.send(JSON.stringify({
                             'type': 'seek_message',
                             'user': username,
                             'message': t,
-                         }));
+                         }));  
                     }
                 }
             }
@@ -104,7 +103,7 @@
         if (!username) {
             username = 'guest';
         }
-
+        // ws for http, wss for https
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -183,6 +182,7 @@
             console.error('Chat socket closed unexpectedly');
         };
 
+
         document.querySelector('#chat-message-input').focus();
         document.querySelector('#chat-message-input').onkeyup = function (e) {
             if (e.keyCode === 13) {  // enter, return
@@ -233,7 +233,14 @@
             chatSocket.send(JSON.stringify({
                 'type': 'room_leave',
                 'user': username,
-                'message': 'joined',
+                'message': 'left',
+            }))
+        }
+        window.onunload = (event) => {
+            chatSocket.send(JSON.stringify({
+                'type': 'room_leave',
+                'user': username,
+                'message': 'left',
             }))
         }
 
@@ -277,7 +284,7 @@
             let adviceRequest = new XMLHttpRequest();
             adviceRequest.onreadystatechange = function() {
                 let advice = JSON.parse(this.responseText);
-                console.log(typeof (this.responseText))
+
 
                 messageInputDom.value = advice.slip.advice
             };
