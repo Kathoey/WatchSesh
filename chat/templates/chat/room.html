@@ -21,15 +21,6 @@
 
     <script>
         // 2. This code loads the IFrame Player API code asynchronously.
-        console.log("before chat socket create")
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-        console.log("after chat socket create")
         let tag = document.createElement('script');
 
         tag.src = "https://www.youtube.com/iframe_api";
@@ -113,7 +104,15 @@
             username = 'guest';
         }
         // ws for http, wss for https
-
+        console.log("before chat socket create")
+        const chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/chat/'
+            + roomName
+            + '/'
+        );
+        console.log("after chat socket create")
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             const today = new Date()
