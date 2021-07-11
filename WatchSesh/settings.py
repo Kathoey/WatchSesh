@@ -28,7 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
-DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
+DEBUG = True
 # You can set the environment variable to False by issuing the following command: export DJANGO_DEBUG=False
 ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1:8000']
 
