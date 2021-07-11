@@ -115,3 +115,7 @@ dmypy.json
 
 # Personal Stuff
 pyvenv.cfg
+
+*.bak
+
+*.sqlite3
