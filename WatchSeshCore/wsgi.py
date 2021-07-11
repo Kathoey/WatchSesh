@@ -1,5 +1,5 @@
 """
-WSGI config for WatchSesh project.
+WSGI config for WatchSeshCore project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WatchSesh.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WatchSeshCore.settings')
 
 application = get_wsgi_application()
