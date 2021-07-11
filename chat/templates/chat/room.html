@@ -103,8 +103,7 @@
             username = 'guest';
         }
 
-        let YTCookie = document.getElementById("player").contentWindow.cookie
-        document.cookie = `${YTCookie}=; SameSite=None; Secure`
+
         // ws for http, wss for https
         const chatSocket = new WebSocket(
             'wss://'
@@ -296,7 +295,12 @@
             };
             adviceRequest.open("GET", "https://api.adviceslip.com/advice");
             adviceRequest.send();
+
+
+
         }
+        let YTCookie = document.getElementById("player").contentWindow.cookie
+        document.cookie = `${YTCookie}=; SameSite=None; Secure`
     </script>
     </body>
 {% else %}
