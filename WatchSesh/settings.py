@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'WatchSesh.wsgi.application'
+WSGI_APPLICATION = 'WatchSesh.core.wsgi.application'
 
 
 # Database
@@ -136,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat'
 
 # Channels
-ASGI_APPLICATION = 'WatchSesh.asgi.application'
+ASGI_APPLICATION = 'WatchSesh.core.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
