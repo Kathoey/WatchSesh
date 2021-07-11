@@ -19,6 +19,7 @@
     {{ user.username|json_script:"username" }}
     <script>
         // 2. This code loads the IFrame Player API code asynchronously.
+
         let tag = document.createElement('script');
 
         tag.src = "https://www.youtube.com/iframe_api";
@@ -101,8 +102,10 @@
         if (!username) {
             username = 'guest';
         }
-        // ws for http, wss for https
 
+        let YTCookie = document.getElementById("player").contentWindow.cookie
+        document.cookie = `${YTCookie}=; SameSite=None; Secure`
+        // ws for http, wss for https
         const chatSocket = new WebSocket(
             'wss://'
             + window.location.host
