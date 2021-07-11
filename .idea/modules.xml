@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/WatchSesh.iml" filepath="$PROJECT_DIR$/.idea/WatchSesh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/WatchSeshProject.iml" filepath="$PROJECT_DIR$/.idea/WatchSeshProject.iml" />
     </modules>
   </component>
 </project>

@@ -1,4 +1,4 @@
-#!E:\PyCharm\WatchSeshCore\Scripts\python.exe
+#!E:\PyCharm\WatchSesh\Scripts\python.exe
 # When the django-admin.py deprecation ends, remove this script.
 import warnings
 
