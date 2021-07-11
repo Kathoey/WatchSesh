@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'WatchSesh.urls'
+ROOT_URLCONF = 'WatchSeshCore.urls'
 
 TEMPLATES = [
     {
