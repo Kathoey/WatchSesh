@@ -5,7 +5,7 @@
     <body>
     <h1></h1>
     <p>Please wait until everyone is in the room before playing the first video</p>
-    <input id="play-video-input" type="text" size="100"><br>
+    <input id="play-video-input" type="text" size="100">
     <input id="play-video-submit" type="button" value="Play"><br>
     <div id="player"></div><br>
     <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
@@ -15,10 +15,9 @@
     <input id="quote-button" type="button" value="Get a random quote"><br>
     <input id="cat-fact-button" type="button" value="Get a cat fact"><br>
     <input id="advice-button" type="button" value="Get advice"><br>
-
+    <iframe src="https://www.youtube.com/embed/_2quiyHfJQw" width="560" height="315" frameborder="0"></iframe>
     {{ room_name|json_script:"room-name" }}
     {{ user.username|json_script:"username" }}
-
     <script>
         // 2. This code loads the IFrame Player API code asynchronously.
         let tag = document.createElement('script');
@@ -104,7 +103,7 @@
             username = 'guest';
         }
         // ws for http, wss for https
-        console.log("before chat socket create")
+
         const chatSocket = new WebSocket(
             'wss://'
             + window.location.host
@@ -112,7 +111,7 @@
             + roomName
             + '/'
         );
-        console.log("after chat socket create")
+
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             const today = new Date()
@@ -123,7 +122,6 @@
             }
                 switch(data.type) {
                     case 'chat_message':
-                        console.log("message sent")
                         document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ': ' + data.message + '\n');
                         document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
                         break;
