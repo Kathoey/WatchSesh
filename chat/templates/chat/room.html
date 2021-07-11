@@ -15,7 +15,6 @@
     <input id="quote-button" type="button" value="Get a random quote"><br>
     <input id="cat-fact-button" type="button" value="Get a cat fact"><br>
     <input id="advice-button" type="button" value="Get advice"><br>
-    <iframe src="https://www.youtube.com/embed/_2quiyHfJQw" width="560" height="315" frameborder="0"></iframe>
     {{ room_name|json_script:"room-name" }}
     {{ user.username|json_script:"username" }}
     <script>
@@ -135,6 +134,9 @@
                         }
 
                         player.loadVideoById(video_id)
+                        console.log(video_id)
+                        console.log(player.getVideoURL())
+                        console.log(player.getVideoEmbedCode())
                         player.seekTo(-1,true)
                         lastTime = -1;
                         player.playVideo()
