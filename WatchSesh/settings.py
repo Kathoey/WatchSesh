@@ -144,16 +144,16 @@ LOGIN_REDIRECT_URL = '/chat'
 # Channels
 ASGI_APPLICATION = 'WatchSesh.asgi.application'
 
-redis_link = redis.from_url(os.environ.get("REDIS_URL"))
+
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": 'channels_redis.core.RedisChannelLayer',
         "CONFIG": {
-            "hosts": [redis_link]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
         },
     },
 }
-'''
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
@@ -163,8 +163,16 @@ CACHES = {
         }
     }
 }
-
-
+'''
+redis_link = redis.from_url(os.environ.get("REDIS_URL"))
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": 'channels_redis.core.RedisChannelLayer',
+        "CONFIG": {
+            "hosts": [redis_link]
+        },
+    },
+}
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
