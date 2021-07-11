@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+from asgi import application
+from wsgi import application
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -72,7 +73,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'WatchSesh.core.wsgi.application'
+WSGI_APPLICATION = 'WatchSesh.wsgi.application'
 
 
 # Database
@@ -136,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat'
 
 # Channels
-ASGI_APPLICATION = 'WatchSesh.core.asgi.application'
+ASGI_APPLICATION = 'WatchSesh.asgi.application'
 
 CHANNEL_LAYERS = {
     "default": {
