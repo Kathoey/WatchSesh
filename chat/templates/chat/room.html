@@ -17,6 +17,7 @@
     <input id="advice-button" type="button" value="Get advice"><br>
     {{ room_name|json_script:"room-name" }}
     {{ user.username|json_script:"username" }}
+    <iframe id="player" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/_2quiyHfJQw?playsinline=1&amp;enablejsapi=1&amp;origin=https://watchsesh.herokuapp.com&amp;widgetid=1"></iframe>
     <script>
         // 2. This code loads the IFrame Player API code asynchronously.
 
@@ -63,6 +64,7 @@
                         'user': username,
                         'message': event.target.getCurrentTime(),
                     }))
+
                     break;
                 case 2:
 
@@ -139,7 +141,7 @@
                         player.seekTo(-1,true)
                         lastTime = -1;
                         player.playVideo()
-                        
+
                         break;
                     case 'pause_message':
                         document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ' paused at: ' + Math.round(data.message) + ' seconds\n');
@@ -294,7 +296,8 @@
             adviceRequest.open("GET", "https://api.adviceslip.com/advice");
             adviceRequest.send();
 
-
+//<iframe frameborder="0" scrolling="no" marginheight="0" marginwidth="0" width="788.54" height="443" type="text/html" src="https://www.youtube.com/embed/_2quiyHfJQw?autoplay=0&amp;fs=0&amp;iv_load_policy=3&amp;showinfo=0&amp;rel=0&amp;cc_load_policy=0&amp;start=0&amp;end=0&amp;origin=http://youtubeembedcode.com"></iframe>
+//<iframe id="player" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/_2quiyHfJQw?playsinline=1&amp;enablejsapi=1&amp;origin=https://watchsesh.herokuapp.com&amp;widgetid=1"></iframe>
         }
 
 
@@ -306,4 +309,3 @@
    <p><a href="{% url 'login' %}">Login</a></p>
 {% endif %}
 {% endblock %}
-
