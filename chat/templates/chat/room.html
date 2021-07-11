@@ -136,10 +136,6 @@
                         }
 
                         player.loadVideoById(video_id)
-                        console.log(video_id)
-                        setTimeout(console.log(player.getVideoURL()),2000)
-                        setTimeout(console.log(player.getVideoEmbedCode()),2000)
-
                         player.seekTo(-1,true)
                         lastTime = -1;
                         player.playVideo()
@@ -287,7 +283,7 @@
         document.querySelector('#advice-button').onclick = function (e) {
             const messageInputDom = document.querySelector('#chat-message-input');
             let adviceRequest = new XMLHttpRequest();
-            adviceRequest.onreadystatechange = function() {
+            adviceRequest.onreadystatechange = function () {
                 let advice = JSON.parse(this.responseText);
 
 
@@ -297,10 +293,9 @@
             adviceRequest.send();
 
 
-
         }
-        let YTCookie = document.getElementById("player").contentDocument.cookie
-        document.cookie = `${YTCookie}=; SameSite=None; Secure`
+
+        console.log(document.cookie)
     </script>
     </body>
 {% else %}
