@@ -21,7 +21,7 @@
         // 2. This code loads the IFrame Player API code asynchronously.
         let tag = document.createElement('script');
 
-        tag.src = "https://www.youtube.com/iframe_api";
+        tag.src = "http://www.youtube.com/iframe_api";
         let firstScriptTag = document.getElementsByTagName('script')[0];
         firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
@@ -135,8 +135,8 @@
 
                         player.loadVideoById(video_id)
                         console.log(video_id)
-                        //out(console.log(player.getVideoURL()),2000)
-                        //setTimeout(console.log(player.getVideoEmbedCode()),2000)
+                        setTimeout(console.log(player.getVideoURL()),2000)
+                        setTimeout(console.log(player.getVideoEmbedCode()),2000)
 
                         player.seekTo(-1,true)
                         lastTime = -1;
