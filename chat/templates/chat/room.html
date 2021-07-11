@@ -104,6 +104,7 @@
             username = 'guest';
         }
         // ws for http, wss for https
+        console.log("before chat socket create")
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
@@ -111,7 +112,7 @@
             + roomName
             + '/'
         );
-
+        console.log("after chat socket create")
         chatSocket.onmessage = function (e) {
             const data = JSON.parse(e.data);
             const today = new Date()
@@ -122,6 +123,7 @@
             }
                 switch(data.type) {
                     case 'chat_message':
+                        console.log("message sent")
                         document.querySelector('#chat-log').value += (h + ':' + m + ' ' + data.user + ': ' + data.message + '\n');
                         document.querySelector('#chat-log').scrollTop = document.querySelector('#chat-log').scrollHeight;
                         break;
