@@ -28,11 +28,16 @@ application = ProtocolTypeRouter({
 '''
 import os
 import django
-import channels.routing
+
+def wrapperfunction1():
+    import channels
+    return channels.routing.get_default_application()
+
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WatchSesh.settings')
 
 django.setup()
 
-application = channels.routing.get_default_application()
+application = wrapperfunction1()
 
