@@ -51,8 +51,8 @@
 
         // 4. The API will call this function when the video player is ready.
         function onPlayerReady(event) {
-            event.target.playVideo();
-            setTimeout(checkPlayerTime, interval); //delayed call
+            //event.target.playVideo();
+            //setTimeout(checkPlayerTime, interval); //delayed call
         }
 
         function onPlayerStateChange(event) {
@@ -75,7 +75,7 @@
                     break;
             }
         }
-
+        /*
         let checkPlayerTime = function() {
             if(lastTime != -1) {
                 // Playing
@@ -95,7 +95,7 @@
             lastTime = player.getCurrentTime();
             setTimeout(checkPlayerTime, interval); /// repeat function call in 1 second
         }
-
+        */
 
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
         let username = JSON.parse(document.getElementById('username').textContent);
