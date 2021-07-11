@@ -142,7 +142,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat'
 
 # Channels
-ASGI_APPLICATION = 'WatchSesh.sucker.application'
+ASGI_APPLICATION = 'WatchSesh.asgi.application'
 
 
 CHANNEL_LAYERS = {
