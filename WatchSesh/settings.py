@@ -22,12 +22,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv'
 import os
+import urllib
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-*(yo$ii%vr66!qbcvg#tr+rwxv778f3v(9p9-h-%@s-1(@0+fv')
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 # You can set the environment variable to False by issuing the following command: export DJANGO_DEBUG=False
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['watchsesh.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -121,7 +123,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATIC_URL = '/static/'
 
 # Default primary key field type
@@ -130,6 +132,10 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/chat'
 
+#redisURL = os.environ.get('REDIS_URL')
+#portIndex = redisURL.rfind(":")
+#urlPart = redisURL[:portIndex]
+#portPart = redisURL[portIndex+1:]
 # Channels
 ASGI_APPLICATION = 'WatchSesh.asgi.application'
 CHANNEL_LAYERS = {
@@ -143,8 +149,11 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            #"hosts": [('127.0.0.1', 6379)],
+            #"hosts": [(urlPart, portPart)]
+            "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')]
         },
     },
 }
-'''
+
+
