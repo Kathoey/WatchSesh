@@ -17,7 +17,7 @@
     <input id="advice-button" type="button" value="Get advice"><br>
     {{ room_name|json_script:"room-name" }}
     {{ user.username|json_script:"username" }}
-    <iframe frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/_2quiyHfJQw?playsinline=1&amp;enablejsapi=1&amp;origin=https://watchsesh.herokuapp.com&amp;widgetid=1"></iframe>
+    <iframe id="player" type="text/html" frameborder="0" allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; gyroscope; picture-in-picture" title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/_2quiyHfJQw?playsinline=1&amp;enablejsapi=1&amp;origin=https://watchsesh.herokuapp.com&amp;widgetid=1"></iframe>
     <script>
         // 2. This code loads the IFrame Player API code asynchronously.
 
