@@ -4,11 +4,13 @@
 {% if user.is_authenticated %}
     <body>
     <h1></h1>
-    <p>Please wait until everyone is in the room before playing the first video</p>
+    <p>Please wait until everyone is in the room before playing the first video</p><br>
+    <p>Enter a Youtube URL into the box and press play to play a video</p><br>
     <input id="play-video-input" type="text" size="100">
     <input id="play-video-submit" type="button" value="Play"><br>
     <div id="player"></div><br>
     <textarea readonly id="chat-log" cols="100" rows="20"></textarea><br>
+    <p>Enter a message and press send to send a message</p><br>
     <input id="chat-message-input" type="text" size="100"><br>
     <input id="chat-message-submit" type="button" value="Send"><br>
     <input id="joke-button" type="button" value="Get a random joke"><br>
